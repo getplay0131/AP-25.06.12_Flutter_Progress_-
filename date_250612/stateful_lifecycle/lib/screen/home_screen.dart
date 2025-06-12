@@ -28,7 +28,9 @@ class HomeScreenStless extends StatefulWidget {
 }
 
 class _HomeScreenStlessState extends State<HomeScreenStless> {
-  bool isShow = true;
+  bool isShow = false;
+  Color color = Colors.red;
+
   // @override
   // void initState() {
   //   // TODO: implement initState
@@ -44,7 +46,16 @@ class _HomeScreenStlessState extends State<HomeScreenStless> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('디버그: isShow = $isShow'), // 값 확인
-            if (isShow) TestWidget(),
+            if (isShow)
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    print("클릭!");
+                    color = color == Colors.red ? Colors.green : Colors.red;
+                  });
+                },
+                child: TestWidget(color: color),
+              ),
             Text('위젯 다음'), // TestWidget 위치 확인
             SizedBox(height: 32),
             ElevatedButton(
@@ -57,9 +68,10 @@ class _HomeScreenStlessState extends State<HomeScreenStless> {
                 //   isShow = !isShow; // isShow 값을 반전
                 //   setState(() {});
                 // }
-
                 setState(() {
                   isShow = !isShow; // isShow 값을 반전
+
+                  // TestWidget();
                 });
               },
               child: Text("보이기"),
@@ -72,7 +84,8 @@ class _HomeScreenStlessState extends State<HomeScreenStless> {
 }
 
 class TestWidget extends StatefulWidget {
-  TestWidget({super.key}) {
+  final Color color;
+  TestWidget({super.key, required this.color}) {
     print("실행 순서 1");
   }
 
@@ -84,6 +97,7 @@ class TestWidget extends StatefulWidget {
 }
 
 class _TestWidgetState extends State<TestWidget> {
+  // Color color = Colors.red;
   @override
   void initState() {
     // TODO: implement initState
@@ -100,11 +114,12 @@ class _TestWidgetState extends State<TestWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print("실행 순서 5");
     return Container(
       width: 100,
       height: 100,
-      color: Colors.red,
-      child: Center(child: Text("실행 순서 5")),
+      color: widget.color,
+      child: Center(child: Text("클릭해봐!")),
     );
   }
 
